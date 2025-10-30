@@ -237,7 +237,6 @@ def daily_aggregate(df, social_score_df):
         0, 1
     )
 
-    
     mood = (
         0.6 * daily['Social_Share'] +
         0.3 * daily['Wellness_Share'] -
@@ -411,7 +410,7 @@ def read_file_preprocess_data():
         "Category"
     ]
     
-    df = pd.read_csv('spendingSummaryTableYTD_Final.csv', usecols=column_names)
+    df = pd.read_csv('sampleData.csv', usecols=column_names)
 
     mask = df['Description'].apply(is_bad_description)
     df = df[~mask].copy()
