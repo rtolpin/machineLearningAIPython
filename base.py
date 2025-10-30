@@ -217,6 +217,14 @@ def daily_aggregate(df, social_score_df):
         0, 1
     )
 
+    mood = (
+        0.6 * daily['Social_Share'] +
+        0.3 * daily['Wellness_Share'] -
+        0.2 * daily['stayed_home']
+    )
+    
+    daily['Mood_Index'] = np.clip(mood, 0, 1)
+
     return daily
 
     
