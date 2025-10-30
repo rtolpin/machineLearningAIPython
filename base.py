@@ -237,6 +237,7 @@ def daily_aggregate(df, social_score_df):
         0, 1
     )
 
+    
     mood = (
         0.6 * daily['Social_Share'] +
         0.3 * daily['Wellness_Share'] -
@@ -409,7 +410,7 @@ def read_file_preprocess_data():
         "Amount",
         "Category"
     ]
-    
+    #spendingSummaryTableYTD_Final
     df = pd.read_csv('sampleData.csv', usecols=column_names)
 
     mask = df['Description'].apply(is_bad_description)
@@ -632,17 +633,17 @@ def main():
 
     n_steps  = X_train_seq.shape[1] 
     n_feats  = X_train_seq.shape[2]
-    
-    # Build the model graph with a fixed input signature
-    model(tf.keras.Input(shape=(n_steps, n_feats)))
 
-    history = model.fit(
-        X_train_seq, y_train_seq,
-        validation_data=(X_val_seq, y_val_seq),
+    fit_kwargs = dict(
         epochs=40,
         batch_size=32,
         verbose=1,
     )
+
+    if X_val_seq is not None and getattr(X_val_seq, "shape", (0,))[0] > 0:
+        fit_kwargs["validation_data"] = (X_val_seq, y_val_seq)
+
+    history = model.fit(X_train_seq, y_train_seq, **fit_kwargs)
 
     next_day_pred = predict_next_day(
         daily=daily_df,
